@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Viking</title>
+
+  <link rel="stylesheet" type="text/css" href="css/index.css"/>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="module" src="js/index-bundle.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      Our Portfolio
+    </h1>
+    <a href="layout1.html">Switch Layout</a>
+    <a href="settings.html">Settings</a>
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+    <div id="checkIns"></div>
+  </div>
+
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNtrWoTaISlnSRRBPOKo6atC1WbX8t410&callback=initMap&v=weekly"
+    defer
+  ></script>
+</body>
+</html>

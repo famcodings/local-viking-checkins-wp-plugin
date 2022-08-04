@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Viking</title>
+
+  <link rel="stylesheet" type="text/css" href="css/index.css" />
+  <script type="module" src="js/settings-bundle.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      Our Portfolio
+    </h1>
+    
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+    <div id="checkIns"></div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2>
+          Security
+        </h2>
+        <a href="index.html">Switch to Layout 1</a>
+        <a href="layout1.html">Switch to Layout 2</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label for="google-map-api-key" class="form-label">Google Map API Key*</label>
+        <input id="google-map-api-key" class="form-control" type="text" name="googleAPIKey">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div id="local-viking-api-inputs">
+          <label for="local-viking-api-key-1" class="form-label">Local Viking API Key*</label>
+          <input id="local-viking-api-key-1" class="form-control" type="text" name="localVikingAPIKey[]">
+        </div>
+        <button id="add-local-viking-api-key" class="add-more-btn" type="button">Add More</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
