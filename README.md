@@ -1,6 +1,6 @@
 # local-viking-checkins-wp-plugin
 
-Run Locally
+### To Run Locally
 ```bash
 $ git clone https://github.com/famcodings/local-viking-checkins-wp-plugin.git
 $ cd local-viking-checkins-wp-plugin
