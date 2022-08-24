@@ -1,15 +1,16 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 module.exports = (env, argv) => ({
   entry: {
     index: "./src/index.js",
-    layout1: "./src/layout1.js",
-    settings: "./src/settings.js"
+    settings: "./src/settings.js",
+    styles: ["./src/css/index.css"],
   },
   output: {
-    filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "./public/js"),
+    filename: "js/[name]-bundle.js",
+    path: path.resolve(__dirname, "./public"),
   },
   resolve: {
     alias: {
@@ -27,10 +28,28 @@ module.exports = (env, argv) => ({
             presets: ['@babel/preset-env']
           }
         }
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: { importLoaders: 1 }
+          },
+          "postcss-loader"
+        ],
       }
     ],
   },
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin(),
+    ],
+  },
   plugins: [
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "css/[name]-bundle.css"
+    }),
   ],
 });

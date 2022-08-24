@@ -11,7 +11,7 @@
 // ).then((response) => {
 //   console.log(response.data);
 // });
-
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const checkIns = [
   {
      "address_components" : [],
@@ -717,49 +717,65 @@ const checkIns = [
   }
 ];
 
-function getCheckInHorizontalCardHTML(checkIn) {
-  return `
-    <div class="card" id="checkin-${checkIn.id}">
-      <div class="row">
-        <div class="col-3">
-          ${
-            checkIn.images.length > 0 ? `
-              <div class="card-image" style="background-image: url(${checkIn.images[0].full_url});"></div> 
-              <div class="d-flex">
-                ${
-                  checkIn.images.map((image, index) => {
-                    if (index === 0) return;
-                    return `
-                      <div 
-                        class="card-thumbnail" 
-                        style="background-image: url(${image.thumbnail_url});"
-                      ></div>
-                    `
-                  }).join("")
-                }
-              </div>
-            ` : `
-              <div class="card-image--no-image"></div> 
-            `
-          }
-        </div>
-        <div class="col-9">
-          <h3>${checkIn.formatted_address}</h3>
-          <p>
-            ${checkIn.description}
-          </p>
-        </div>
+function getCheckInHTML(checkIn, hasMiniMap=false) {
+   const getFormattedDate = (date) => {
+      const d = new Date(date);
+      return `${monthNames[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
+   }
+   const html =  `
+      <div 
+         id="${hasMiniMap ? "mini-map-" : ""}check-in-${checkIn.id}"
+         class="local-viking__check-in ${hasMiniMap ? 'local-viking__check-in--dark-background' : ''}"
+      >
+         <div class="local-viking__check-in__header">
+            <div class="local-viking__check-in__header__title">
+               ${checkIn.customer ? checkIn.customer : "No customer"}
+            </div>
+            <div class="local-viking__check-in__header__date">
+               ${getFormattedDate(checkIn.created_at)}
+            </div>
+         </div>
+         <div class="local-viking__check-in__body">
+            <div class="local-viking__check-in__body__text">
+               ${checkIn.description}
+            </div>
+            <div class="local-viking__check-in__body__images">
+            ${hasMiniMap ? `<div class="mini-map"></div>` : ""}
+            ${
+               checkIn.images.length > 0 ? `
+                   ${
+                     checkIn.images.map((image, index) => {
+                       return `
+                         <div
+                           style="background-image: url(${image.thumbnail_url});"
+                         ></div>
+                       `
+                     }).join("")
+                   }
+               ` : `
+                  <div 
+                     style="background-image: url(../media/images/no-image-icon.png)"
+                  ></div> 
+               `
+            }
+            </div>
+         </div>
+         <div class="local-viking__check-in__footer">
+            <span class="local-viking__check-in__footer__tag">
+               ${checkIn.business.name}
+            </span>
+         </div>
       </div>
-    </div>
   `
+   return html;
 }
 
-function getAllCheckInHorizontalCardsHTML(checkIns) {
-  return checkIns.map(checkIn => getCheckInHorizontalCardHTML(checkIn)).join("");
+function getAllCheckInHTML(checkIns, hasMiniMap=false) {
+  return checkIns.map(checkIn => getCheckInHTML(checkIn, hasMiniMap));
 }
 
-function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
+function initPinsMap() {
+  const map = new google.maps.Map(document.querySelector(".local-viking-pins-on-map__big-map__map"), {
     zoom: 8,
     center: { lat: 44.807723, lng: 20.4684875 },
   });
@@ -775,6 +791,42 @@ function initMap() {
   });
 }
 
-document.getElementById("checkIns").innerHTML = getAllCheckInHorizontalCardsHTML(checkIns);
+function initMiniMaps() {
+   checkIns.forEach((checkIn, i) => {
+     const elem = document.getElementById(`mini-map-check-in-${checkIn.id}`);
+     const mapElem = elem.querySelector(".mini-map");
+     if (!checkIn.coords || !Object.keys(checkIn.coords).length) {
+         mapElem.remove()
+       return
+     }
+     const position = {lat: Number(checkIn.coords.lat), lng: Number(checkIn.coords.lng)}
+     const map = new google.maps.Map(mapElem, {
+       zoom: 15,
+       center: position,
+     });
+     
+     new google.maps.Marker({
+       position,
+       map,
+     });
+   });
+}
 
-window.initMap = initMap;
+function initMaps() {
+   initMiniMaps();
+   initPinsMap();
+}
+
+function populateCheckinColumns(checkinsHTMLList, columnsContainerSelector) {
+   const checkinsContainer = document.querySelector(columnsContainerSelector);
+   let currentColumnIndex = 0;
+   checkinsHTMLList.forEach((checkin, i) => {
+      const column = checkinsContainer.children[currentColumnIndex++];
+      column.innerHTML = column.innerHTML + checkin;
+      currentColumnIndex = currentColumnIndex % checkinsContainer.children.length
+   });
+}
+populateCheckinColumns(getAllCheckInHTML(checkIns), ".local-viking-pins-on-map .local-viking__check-ins")
+populateCheckinColumns(getAllCheckInHTML(checkIns, true), ".local-viking-mini-maps .local-viking__check-ins")
+
+window.initMap = initMaps;
