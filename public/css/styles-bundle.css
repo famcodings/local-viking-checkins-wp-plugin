@@ -2,7 +2,7 @@
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/postcss-loader/dist/cjs.js!./src/css/index.css ***!
   \*******************************************************************************************************************************************/
 :root {
-  --column_width: 4;
+  --local_viking_checkin_column_width: 12;
 }
 html,
 body {
@@ -38,7 +38,7 @@ body {
 }
 
 .local-viking__check-ins__column {
-    grid-column: span var(--column_width);
+    grid-column: span var(--local_viking_checkin_column_width);
   }
 
 .local-viking__check-ins__column .local-viking__check-in {
@@ -86,7 +86,7 @@ body {
         }
 
 .local-viking__check-ins__column .local-viking__check-in__body__images div {
-            width: 127px;
+            width: 123px;
             height: 90px;
             border-radius: 4px;
           }
@@ -191,3 +191,26 @@ body {
 .local-viking-settings .add-more-btn {
     cursor: pointer;
   }
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  :root {
+    --local_viking_checkin_column_width: 6;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { }
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  :root {
+    --local_viking_checkin_column_width: 4;
+  }
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) { }

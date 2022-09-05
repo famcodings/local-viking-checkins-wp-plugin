@@ -1,5 +1,5 @@
 :root {
-  --column_width: 4;
+  --local_viking_checkin_column_width: 12;
 }
 html,
 body {
@@ -34,7 +34,7 @@ body {
   grid-template-columns: repeat(12, 1fr);
 
   &__column {
-    grid-column: span var(--column_width);
+    grid-column: span var(--local_viking_checkin_column_width);
 
     .local-viking__check-in {
       width: 100%;
@@ -72,7 +72,7 @@ body {
           flex-wrap: wrap;
           gap: 8px;
           div {
-            width: 127px;
+            width: 123px;
             height: 90px;
             border-radius: 4px;
             &:not(.mini-map) {
@@ -184,3 +184,26 @@ body {
     cursor: pointer;
   }
 }
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  :root {
+    --local_viking_checkin_column_width: 6;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { }
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  :root {
+    --local_viking_checkin_column_width: 4;
+  }
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) { }
