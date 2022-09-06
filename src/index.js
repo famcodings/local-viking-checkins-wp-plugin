@@ -11,14 +11,7 @@
 // ).then((response) => {
 //   console.log(response.data);
 // });
-const breakpoints = {
-   xs: 0,
-   sm: 576,
-   md: 768,
-   lg: 992,
-   xl: 1200,
-   xxl: 1400
-};
+
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const checkIns = [
   {
@@ -762,7 +755,7 @@ function getCheckInHTML(checkIn, hasMiniMap=false) {
                    }
                ` : `
                   <div 
-                     style="background-image: url(../media/images/no-image-icon.png)"
+                     style="background-image: url(../assets/images/no-image-icon.png)"
                   ></div> 
                `
             }
@@ -825,36 +818,21 @@ function initMaps() {
    initPinsMap();
 }
 
-function populateCheckinColumns(checkinsHTMLList, columnsContainerSelector) {
-   const checkinsContainer = document.querySelector(columnsContainerSelector);
-   let currentColumnIndex = 0;
-   checkinsHTMLList.forEach((checkin, i) => {
-      const column = checkinsContainer.children[currentColumnIndex++];
-      column.innerHTML = column.innerHTML + checkin;
-      currentColumnIndex = currentColumnIndex % checkinsContainer.children.length
-   });
-}
-
-function addCheckinColumnsToContainer(columnsCount, columnsContainerSelector) {
-   const checkinsContainer = document.querySelector(columnsContainerSelector);
-   const columnHTML = `<div class="local-viking__check-ins__column"></div>`;
-   checkinsContainer.innerHTML = "";
-   for (let i = 0; i < columnsCount; i++) {
-      checkinsContainer.innerHTML = checkinsContainer.innerHTML + columnHTML;
-   }
-}
-
 function populateCheckins(checkinsHTMLList, columnsContainerSelector) {
-   let columnsCount = 0;
-   if(window.innerWidth >= breakpoints.xl) {
-      columnsCount = 3
-   } else if (window.innerWidth >= breakpoints.md) {
-      columnsCount = 2
-   } else {
-      columnsCount = 1
-   }
-   addCheckinColumnsToContainer(columnsCount, columnsContainerSelector)
-   populateCheckinColumns(checkinsHTMLList, columnsContainerSelector)
+   const checkinsContainer = document.querySelector(columnsContainerSelector);
+   const allCheckins = checkinsHTMLList.join("");
+   checkinsContainer.innerHTML = `
+      <div class="local-viking__grid-sizer"></div>
+      ${allCheckins}
+   `;
+   const msnry = new Masonry(checkinsContainer, {
+      itemSelector: '.local-viking__check-in',
+      columnWidth: '.local-viking__grid-sizer',
+      percentPosition: true,
+      gutter: 16,
+      isFitWidth: true
+   });
+   return msnry;
 }
 
 function initPopulation() {
@@ -862,11 +840,6 @@ function initPopulation() {
    populateCheckins(getAllCheckInHTML(checkIns, true), ".local-viking-mini-maps .local-viking__check-ins")
 }
 
-function handleResize() {
-   initPopulation();
-}
-
 initPopulation();
 
-window.addEventListener('resize', handleResize)
 window.initMap = initMaps;
