@@ -29,12 +29,12 @@ body {
 
 .local-viking__check-ins {
   margin: 0 auto;
-  
+
   .local-viking__check-in {
     box-sizing: border-box;
     width: calc(33.33% - 11px);
     min-width:  320px;
-    max-width: 550;
+    max-width: 550px;
     margin-bottom: 16px;
     border-radius: 8px;
     background: #FFFFFF;
