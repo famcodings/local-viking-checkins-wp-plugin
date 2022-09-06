@@ -12,6 +12,10 @@
 //   console.log(response.data);
 // });
 
+const MINI_MAP_ZOOM = 12;
+const MINI_MAP_WIDTH = 123;
+const MINI_MAP_HEIGHT = 90;
+const GOOGLE_MAP_API_KEY = "<API-KEY>";
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const checkIns = [
   {
@@ -723,10 +727,13 @@ function getCheckInHTML(checkIn, hasMiniMap=false) {
       const d = new Date(date);
       return `${monthNames[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
    }
+   const getGoogleMapStaticURL = (lat, lng)  => {
+      return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&markers=${lat},${lng}&zoom=${MINI_MAP_ZOOM}&size=${MINI_MAP_WIDTH}x${MINI_MAP_HEIGHT}&key=${GOOGLE_MAP_API_KEY}`;
+   }
    const html =  `
       <div 
          id="${hasMiniMap ? "mini-map-" : ""}check-in-${checkIn.id}"
-         class="local-viking__check-in ${hasMiniMap ? 'local-viking__check-in--dark-background' : ''}"
+         class="local-viking__check-in"
       >
          <div class="local-viking__check-in__header">
             <div class="local-viking__check-in__header__title">
@@ -741,7 +748,13 @@ function getCheckInHTML(checkIn, hasMiniMap=false) {
                ${checkIn.description}
             </div>
             <div class="local-viking__check-in__body__images">
-               ${hasMiniMap && (checkIn.coords && Object.keys(checkIn.coords).length) ? `<div class="mini-map"></div>` : ""}
+               ${
+                  hasMiniMap && (checkIn.coords && Object.keys(checkIn.coords).length) ? `
+                     <div
+                        style="background-image: url(${getGoogleMapStaticURL(checkIn.coords.lat, checkIn.coords.lng)});"
+                     ></div>
+                  ` : ""
+               }
                ${
                   checkIn.images.length > 0 ? `
                      ${
@@ -788,28 +801,7 @@ function initPinsMap() {
   });
 }
 
-function initMiniMaps() {
-   checkIns.forEach((checkIn, i) => {
-     const elem = document.getElementById(`mini-map-check-in-${checkIn.id}`);
-     const mapElem = elem.querySelector(".mini-map");
-     if (!mapElem) {
-         return
-     }
-     const position = {lat: Number(checkIn.coords.lat), lng: Number(checkIn.coords.lng)}
-     const map = new google.maps.Map(mapElem, {
-       zoom: 15,
-       center: position,
-     });
-     
-     new google.maps.Marker({
-       position,
-       map,
-     });
-   });
-}
-
 function initMaps() {
-   initMiniMaps();
    initPinsMap();
 }
 
@@ -834,7 +826,7 @@ function populateCheckins(checkinsHTMLList, columnsContainerSelector) {
 }
 
 function initPopulation() {
-   populateCheckins(getAllCheckInHTML(checkIns), ".local-viking-pins-on-map .local-viking__check-ins")
+   populateCheckins(getAllCheckInHTML(checkIns, true), ".local-viking-pins-on-map .local-viking__check-ins")
    populateCheckins(getAllCheckInHTML(checkIns, true), ".local-viking-mini-maps .local-viking__check-ins")
 }
 

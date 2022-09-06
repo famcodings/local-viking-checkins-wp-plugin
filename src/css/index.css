@@ -71,11 +71,8 @@ body {
           width: 123px;
           height: 90px;
           border-radius: 4px;
-          &:not(.mini-map) {
-            background-size: cover;
-            background-position: center;
-          }
-
+          background-size: cover;
+          background-position: center;
         }
       }
     }
@@ -90,16 +87,6 @@ body {
         padding: 6px 8px;
       }
     }
-
-    &.local-viking__check-in--dark-background {
-      background: #EDF0F4;
-      border: none;
-
-      .local-viking__check-in__footer__tag {
-        background: #FFF;
-      }
-    }
-
   }
 
   .local-viking__grid-sizer {

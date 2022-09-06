@@ -42,7 +42,6 @@ body {
     border-radius: 8px;
     background: #FFFFFF;
     border: 1px solid #DCDCDC;
-
   }
 
 .local-viking__check-ins .local-viking__check-in__header {
@@ -85,13 +84,9 @@ body {
           width: 123px;
           height: 90px;
           border-radius: 4px;
-
+          background-size: cover;
+          background-position: center;
         }
-
-.local-viking__check-ins .local-viking__check-in__body__images div:not(.mini-map) {
-            background-size: cover;
-            background-position: center;
-          }
 
 .local-viking__check-ins .local-viking__check-in__footer {
       padding: 0 calc(16px + 0.390625vw) calc(16px + 0.390625vw) calc(16px + 0.390625vw);
@@ -104,15 +99,6 @@ body {
         background: #EDF0F4;
         border-radius: 4px;
         padding: 6px 8px;
-      }
-
-.local-viking__check-ins .local-viking__check-in.local-viking__check-in--dark-background {
-      background: #EDF0F4;
-      border: none;
-    }
-
-.local-viking__check-ins .local-viking__check-in.local-viking__check-in--dark-background .local-viking__check-in__footer__tag {
-        background: #FFF;
       }
 
 .local-viking__check-ins .local-viking__grid-sizer {
