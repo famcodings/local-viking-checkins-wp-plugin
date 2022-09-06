@@ -820,12 +820,15 @@ function populateCheckins(checkinsHTMLList, columnsContainerSelector) {
       <div class="local-viking__grid-sizer"></div>
       ${allCheckins}
    `;
-   const msnry = new Masonry(checkinsContainer, {
+   let msnry = new Masonry(checkinsContainer, {
       itemSelector: '.local-viking__check-in',
       columnWidth: '.local-viking__grid-sizer',
       percentPosition: true,
       gutter: 16,
       isFitWidth: true
+   });
+   imagesLoaded( checkinsContainer, function() {
+      msnry.layout();
    });
    return msnry;
 }
