@@ -741,24 +741,20 @@ function getCheckInHTML(checkIn, hasMiniMap=false) {
                ${checkIn.description}
             </div>
             <div class="local-viking__check-in__body__images">
-            ${hasMiniMap ? `<div class="mini-map"></div>` : ""}
-            ${
-               checkIn.images.length > 0 ? `
-                   ${
-                     checkIn.images.map((image, index) => {
-                       return `
-                         <div
-                           style="background-image: url(${image.thumbnail_url});"
-                         ></div>
-                       `
-                     }).join("")
-                   }
-               ` : `
-                  <div 
-                     style="background-image: url(../assets/images/no-image-icon.png)"
-                  ></div> 
-               `
-            }
+               ${hasMiniMap && (checkIn.coords && Object.keys(checkIn.coords).length) ? `<div class="mini-map"></div>` : ""}
+               ${
+                  checkIn.images.length > 0 ? `
+                     ${
+                        checkIn.images.map((image, index) => {
+                        return `
+                           <div
+                              style="background-image: url(${image.thumbnail_url});"
+                           ></div>
+                        `
+                        }).join("")
+                     }
+                  ` : ""
+               }
             </div>
          </div>
          <div class="local-viking__check-in__footer">
@@ -796,9 +792,8 @@ function initMiniMaps() {
    checkIns.forEach((checkIn, i) => {
      const elem = document.getElementById(`mini-map-check-in-${checkIn.id}`);
      const mapElem = elem.querySelector(".mini-map");
-     if (!checkIn.coords || !Object.keys(checkIn.coords).length) {
-         mapElem.remove()
-       return
+     if (!mapElem) {
+         return
      }
      const position = {lat: Number(checkIn.coords.lat), lng: Number(checkIn.coords.lng)}
      const map = new google.maps.Map(mapElem, {
