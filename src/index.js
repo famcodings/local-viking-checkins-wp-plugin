@@ -750,9 +750,7 @@ function getCheckInHTML(checkIn, hasMiniMap=false) {
             <div class="local-viking__check-in__body__images">
                ${
                   hasMiniMap && (checkIn.coords && Object.keys(checkIn.coords).length) ? `
-                     <div
-                        style="background-image: url(${getGoogleMapStaticURL(checkIn.coords.lat, checkIn.coords.lng)});"
-                     ></div>
+                     <img onerror="event.target.style.display = 'none'" src="${getGoogleMapStaticURL(checkIn.coords.lat, checkIn.coords.lng)}">
                   ` : ""
                }
                ${
